@@ -15,59 +15,85 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
-  Date: { input: any; output: any; }
-};
-
-export type AnimeGenre = {
-  __typename?: 'AnimeGenre';
-  createdAt: Scalars['Date']['output'];
-  id: Scalars['ID']['output'];
-  title: Scalars['String']['output'];
-};
-
-export type AnimeGenreUpdateInput = {
-  id: Scalars['ID']['input'];
-  title: Scalars['String']['input'];
 };
 
 export type Mutation = {
   __typename?: 'Mutation';
-  createAnimeGenre: AnimeGenre;
-  deleteAnimeGenre: AnimeGenre;
-  registerUser: User;
-  updateAnimeGenre: AnimeGenre;
+  createPost: Post;
+  createUser: User;
+  deletePost?: Maybe<Post>;
+  deleteUser: Scalars['ID']['output'];
+  getPost?: Maybe<Post>;
+  updatePost: Post;
+  updateUser: User;
 };
 
 
-export type MutationCreateAnimeGenreArgs = {
-  title: Scalars['String']['input'];
+export type MutationCreatePostArgs = {
+  input: PostCreateInput;
 };
 
 
-export type MutationDeleteAnimeGenreArgs = {
+export type MutationCreateUserArgs = {
+  input: UserCreateInput;
+};
+
+
+export type MutationDeletePostArgs = {
   id: Scalars['ID']['input'];
 };
 
 
-export type MutationRegisterUserArgs = {
-  input: UserRegisterInput;
+export type MutationDeleteUserArgs = {
+  id: Scalars['ID']['input'];
 };
 
 
-export type MutationUpdateAnimeGenreArgs = {
-  input: AnimeGenreUpdateInput;
+export type MutationGetPostArgs = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+};
+
+
+export type MutationUpdatePostArgs = {
+  input: PostUpdateInput;
+};
+
+
+export type MutationUpdateUserArgs = {
+  input: UserUpdateInput;
+};
+
+export type Post = {
+  __typename?: 'Post';
+  id: Scalars['ID']['output'];
+  phoneNum?: Maybe<Scalars['Int']['output']>;
+  postImage?: Maybe<Scalars['String']['output']>;
+  title?: Maybe<Scalars['String']['output']>;
+};
+
+export type PostCreateInput = {
+  phoneNum: Scalars['Int']['input'];
+  postImage?: InputMaybe<Scalars['String']['input']>;
+  title: Scalars['String']['input'];
+};
+
+export type PostUpdateInput = {
+  id: Scalars['ID']['input'];
+  phoneNum?: InputMaybe<Scalars['Int']['input']>;
+  postImage?: InputMaybe<Scalars['String']['input']>;
+  title?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type Query = {
   __typename?: 'Query';
-  animeGenre?: Maybe<AnimeGenre>;
-  animeGenres: Array<AnimeGenre>;
+  getPost?: Maybe<Post>;
+  getPostList: Array<Post>;
   getUser?: Maybe<User>;
-  getUsers: Array<Maybe<User>>;
+  getUserList: Array<User>;
 };
 
 
-export type QueryAnimeGenreArgs = {
+export type QueryGetPostArgs = {
   id: Scalars['ID']['input'];
 };
 
@@ -78,110 +104,64 @@ export type QueryGetUserArgs = {
 
 export type User = {
   __typename?: 'User';
+  UserImage?: Maybe<Scalars['String']['output']>;
+  bio?: Maybe<Scalars['String']['output']>;
   email: Scalars['String']['output'];
   id: Scalars['ID']['output'];
-  image?: Maybe<Scalars['String']['output']>;
-  password?: Maybe<Scalars['String']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+  password: Scalars['String']['output'];
 };
 
-export type UserRegisterInput = {
+export type UserCreateInput = {
+  UserImage?: InputMaybe<Scalars['String']['input']>;
+  bio?: InputMaybe<Scalars['String']['input']>;
   email: Scalars['String']['input'];
+  name?: InputMaybe<Scalars['String']['input']>;
   password: Scalars['String']['input'];
 };
 
-export type AnimeGenresQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type AnimeGenresQuery = { __typename?: 'Query', animeGenres: Array<{ __typename?: 'AnimeGenre', id: string, title: string, createdAt: any }> };
-
-export type AnimeGenreQueryVariables = Exact<{
+export type UserUpdateInput = {
+  UserImage?: InputMaybe<Scalars['String']['input']>;
+  bio?: InputMaybe<Scalars['String']['input']>;
   id: Scalars['ID']['input'];
-}>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  password?: InputMaybe<Scalars['String']['input']>;
+};
 
 
-export type AnimeGenreQuery = { __typename?: 'Query', animeGenre?: { __typename?: 'AnimeGenre', id: string, title: string, createdAt: any } | null };
-
-
-export const AnimeGenresDocument = gql`
-    query AnimeGenres {
-  animeGenres {
+export const CreatePostDocument = gql`
+    mutation CreatePost($input: PostCreateInput!) {
+  createPost(input: $input) {
     id
     title
-    createdAt
+    postImage
+    phoneNum
   }
 }
     `;
+export type CreatePostMutationFn = Apollo.MutationFunction<CreatePostMutation, CreatePostMutationVariables>;
 
 /**
- * __useAnimeGenresQuery__
+ * __useCreatePostMutation__
  *
- * To run a query within a React component, call `useAnimeGenresQuery` and pass it any options that fit your needs.
- * When your component renders, `useAnimeGenresQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
+ * To run a mutation, you first call `useCreatePostMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreatePostMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
  *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const { data, loading, error } = useAnimeGenresQuery({
+ * const [createPostMutation, { data, loading, error }] = useCreatePostMutation({
  *   variables: {
+ *      input: // value for 'input'
  *   },
  * });
  */
-export function useAnimeGenresQuery(baseOptions?: Apollo.QueryHookOptions<AnimeGenresQuery, AnimeGenresQueryVariables>) {
+export function useCreatePostMutation(baseOptions?: Apollo.MutationHookOptions<CreatePostMutation, CreatePostMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<AnimeGenresQuery, AnimeGenresQueryVariables>(AnimeGenresDocument, options);
+        return Apollo.useMutation<CreatePostMutation, CreatePostMutationVariables>(CreatePostDocument, options);
       }
-export function useAnimeGenresLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AnimeGenresQuery, AnimeGenresQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<AnimeGenresQuery, AnimeGenresQueryVariables>(AnimeGenresDocument, options);
-        }
-export function useAnimeGenresSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<AnimeGenresQuery, AnimeGenresQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<AnimeGenresQuery, AnimeGenresQueryVariables>(AnimeGenresDocument, options);
-        }
-export type AnimeGenresQueryHookResult = ReturnType<typeof useAnimeGenresQuery>;
-export type AnimeGenresLazyQueryHookResult = ReturnType<typeof useAnimeGenresLazyQuery>;
-export type AnimeGenresSuspenseQueryHookResult = ReturnType<typeof useAnimeGenresSuspenseQuery>;
-export type AnimeGenresQueryResult = Apollo.QueryResult<AnimeGenresQuery, AnimeGenresQueryVariables>;
-export const AnimeGenreDocument = gql`
-    query AnimeGenre($id: ID!) {
-  animeGenre(id: $id) {
-    id
-    title
-    createdAt
-  }
-}
-    `;
-
-/**
- * __useAnimeGenreQuery__
- *
- * To run a query within a React component, call `useAnimeGenreQuery` and pass it any options that fit your needs.
- * When your component renders, `useAnimeGenreQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useAnimeGenreQuery({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useAnimeGenreQuery(baseOptions: Apollo.QueryHookOptions<AnimeGenreQuery, AnimeGenreQueryVariables> & ({ variables: AnimeGenreQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<AnimeGenreQuery, AnimeGenreQueryVariables>(AnimeGenreDocument, options);
-      }
-export function useAnimeGenreLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AnimeGenreQuery, AnimeGenreQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<AnimeGenreQuery, AnimeGenreQueryVariables>(AnimeGenreDocument, options);
-        }
-export function useAnimeGenreSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<AnimeGenreQuery, AnimeGenreQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<AnimeGenreQuery, AnimeGenreQueryVariables>(AnimeGenreDocument, options);
-        }
-export type AnimeGenreQueryHookResult = ReturnType<typeof useAnimeGenreQuery>;
-export type AnimeGenreLazyQueryHookResult = ReturnType<typeof useAnimeGenreLazyQuery>;
-export type AnimeGenreSuspenseQueryHookResult = ReturnType<typeof useAnimeGenreSuspenseQuery>;
-export type AnimeGenreQueryResult = Apollo.QueryResult<AnimeGenreQuery, AnimeGenreQueryVariables>;
+export type CreatePostMutationHookResult = ReturnType<typeof useCreatePostMutation>;
+export type CreatePostMutationResult = Apollo.MutationResult<CreatePostMutation>;
+export type CreatePostMutationOptions = Apollo.BaseMutationOptions<CreatePostMutation, CreatePostMutationVariables>;

@@ -1,6 +1,6 @@
 import { useAuth } from '@clerk/clerk-expo';
 import { Redirect, Stack } from 'expo-router';
-import React from 'react';
+import * as React from 'react';
 import { Text, View } from 'react-native';
 
 const AppLayout = () => {
